@@ -15,7 +15,7 @@ import matplotlib.image as mpimg
 import numpy as np
 
 #%%
-font = ImageFont.truetype('simkai.ttf',100)
+font = ImageFont.truetype('./Font/simkai.ttf',100)
 img = Image.new('RGBA',(100,100),(255,255,255))
 draw = ImageDraw.Draw(img)
 draw.text((0, 0),"翻",(0,0,0),font=font)
