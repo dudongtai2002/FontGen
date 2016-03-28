@@ -4,7 +4,7 @@ Created on Mon Mar 28 12:26:06 2016
 
 @author: shengx
 
-This file is just for general testing
+Main function
 """
 
 #%%
@@ -15,10 +15,10 @@ from utility import *
 
 generateLetterSets(1000, 50)
 
-inputLetter = Font(100,'simsun.ttf') 
+inputFont = Font(100,'simsun.ttf') 
 
-trainInput, testInput = inputLetter.getLetterSets()
+trainInput, testInput = inputFont.getLetterSets()
 
-outputLetter = Font(100,'msyhbd.ttf') 
+outputFont = Font(100,'msyhbd.ttf') 
 
-trainOutput, testOutput = outputLetter.getLetterSets()
+trainOutput, testOutput = outputFont.getLetterSets()
