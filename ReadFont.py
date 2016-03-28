@@ -16,9 +16,17 @@ import numpy as np
 
 #%%
 font = ImageFont.truetype('./Font/simkai.ttf',100)
-img = Image.new('RGBA',(100,100),(255,255,255))
+img = Image.new('L',(100,100),(1))
 draw = ImageDraw.Draw(img)
 draw.text((0, 0),"翻",(0,0,0),font=font)
 draw = ImageDraw.Draw(img)
 arr = np.array(img)
 imgplot = plt.imshow(arr)
+#%%
+f1 = open('./Character/ChineseCharacter.txt','r')
+line = f1.readline()
+
+letters = np.zeros((100,100,3500));
+
+for letter in line:
+    
