@@ -9,7 +9,6 @@ from PIL import ImageFont
 from PIL import Image
 from PIL import ImageDraw
 import numpy as np
-import matplotlib.pyplot as plt
 import json
 
 
