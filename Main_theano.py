@@ -11,13 +11,12 @@ Main function
 
 from Font import *
 from utility import *
-import tensorflow as tf
 
 basis_size = 50
 training_size = 1000
 testing_size = 50
 generateLetterSets(training_size, testing_size)
-
+#%%
 inputFont = Font(basis_size,'simsun.ttf') 
 
 trainInput, testInput = inputFont.getLetterSets()
@@ -61,7 +60,7 @@ b_shp = (2, )
 b = theano.shared(np.asarray(rng.uniform(low = -0.5, high = 0.5, size = b_shp),dtype = input.dtype), name = 'b')
 
 #build symbolic expression that compute the convolution of input with filter W
-nv_out = conv2d(input,W)
+conv_out = conv2d(input,W)
 # add bias and apply activation function
 output = T.nnet.sigmoid(conv_out + b.dimshuffle('x', 0, 'x', 'x'))
 
