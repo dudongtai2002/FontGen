@@ -16,7 +16,7 @@ basis_size = 50
 training_size = 1000
 testing_size = 50
 generateLetterSets(training_size, testing_size)
-#%%
+
 inputFont = Font(basis_size,'simsun.ttf') 
 
 trainInput, testInput = inputFont.getLetterSets()
@@ -35,6 +35,21 @@ trainInput = np.transpose(trainInput)
 testInput = np.transpose(testInput)
 trainOutput = np.transpose(trainOutput)
 testOutput = np.transpose(testOutput)
+
+#%%
+from Font import *
+from utility import *
+import numpy as np
+
+with np.load('train_data.npz') as data:
+    trainInput = data['trainInput']
+    trainOutput = data['trainOutput']
+    testInput = data['testInput']
+    testOutput = data['testOutput']
+    basis_size = int(data['basis_size'])
+    testing_size = int(data['testing_size'])
+    training_size = int(data['training_size'])
+
 
 
 #%% deep neural network
