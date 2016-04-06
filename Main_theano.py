@@ -81,6 +81,20 @@ output = T.nnet.sigmoid(conv_out + b.dimshuffle('x', 0, 'x', 'x'))
 
 # create theano function to compute filtered images
 f = theano.function([input], output)
+#%%
+import theano
+from theano import tensor as T
+from thrano.tensor.nnet import conv2d
+from NN import *
+
+
+
+
+
+
+
+
+
 
 #%% apply the convolutional layer
 import matplotlib.pyplot as plt

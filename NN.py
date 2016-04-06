@@ -1,4 +1,4 @@
-import # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 Spyder Editor
 
@@ -7,6 +7,13 @@ This is a temporary script file.
 Neural network class
 reference: http://deeplearning.net/tutorial/lenet.html
 """
+
+import theano
+from theano import tensor as T
+from thrano.tensor.nnet import conv2d
+
+
+
 class LeNetConvPoolLayer(object):
     """Pool Layer of a convolutional network """
 
@@ -83,3 +90,5 @@ class LeNetConvPoolLayer(object):
 
         # keep track of model input
         self.input = input
+        
+        
