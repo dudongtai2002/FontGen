@@ -16,7 +16,7 @@ basis_size = 50
 training_size = 1000
 testing_size = 50
 generateLetterSets(training_size, testing_size)
-#%%
+
 inputFont = Font(basis_size,'simsun.ttf') 
 
 trainInput, testInput = inputFont.getLetterSets()
@@ -36,36 +36,105 @@ testInput = np.transpose(testInput)
 trainOutput = np.transpose(trainOutput)
 testOutput = np.transpose(testOutput)
 
-
-#%% deep neural network
-# reference: http://deeplearning.net/tutorial/lenet.html
+#%%
+from Font import *
+from utility import *
 import numpy as np
-import theano
-from theano import tensor as T
-from theano.tensor.nnet import conv2d
 
-rng = np.random.RandomState(23455)
+with np.load('train_data.npz') as data:
+    trainInput = data['trainInput']
+    trainOutput = data['trainOutput']
+    testInput = data['testInput']
+    testOutput = data['testOutput']
+    basis_size = int(data['basis_size'])
+    testing_size = int(data['testing_size'])
+    training_size = int(data['training_size'])
 
-# instantiate 4D tensor for input
 
-input = T.tensor4(name = 'input')
+#%% convert data to theano format 
+trainInput = np.transpose(trainInput)
+testInput = np.transpose(testInput)
+trainOutput = np.transpose(trainOutput)
+testOutput = np.transpose(testOutput)  # 1st dimension is the number of examples, 2nd dimension is vectorized images
 
-# initialize shared variable for weights
-w_shp = (2, 3, 9, 9)
-w_bound = np.sqrt(3*9*9)
-W = theano.shared( np.asarray(rng.uniform(low = -1.0/w_bound, high = 1.0/w_bound, size = w_shp),dtype=input.dtype), name = 'W')
+test_set = (testInput, testOutput)   
+train_set = (trainInput, trainOutput)  # a tuple for input and output
 
-# initalize shared variable for bias
-b_shp = (2, )
-b = theano.shared(np.asarray(rng.uniform(low = -0.5, high = 0.5, size = b_shp),dtype = input.dtype), name = 'b')
+rval = [test_set, train_set]  # a list for both training and testing, with the first element being testing and second element being training
 
-#build symbolic expression that compute the convolution of input with filter W
-conv_out = conv2d(input,W)
-# add bias and apply activation function
-output = T.nnet.sigmoid(conv_out + b.dimshuffle('x', 0, 'x', 'x'))
+# compute minibatches
+batch_size = 50
+n_train_batches = trainInput.shape[0] // batch_size
+n_test_batches = testOutput.shape[0] // batch_size
 
-# create theano function to compute filtered images
-f = theano.function([input], output)
+
+
+#%% building the actual model
+from NN import *
+print('...building the model')
+
+index = T.lscalar()
+x = T.matrix('x')
+y = T.matrix('y')
+
+rng = np.random.RandomState(1234)
+# construct a MLP class
+n_hidden = 100
+L1_reg = 0.05
+L2_reg = 0
+learning_rate = 0.2
+classifier = MLP(rng = rng, input = x, n_in = basis_size**2, n_hidden=n_hidden, n_out = basis_size**2)
+cost = (
+        classifier.negative_log_likelihood(y) 
+        + L1_reg * classifier.L1 
+        + L2_reg * classifier.L2_sqr
+        )
+        
+test_model = theano.function(
+        inputs=[index],
+        outputs=classifier.errors(y),
+        givens={
+            x: testInput[index * batch_size: (index + 1) * batch_size],
+            y: testOutput[index * batch_size: (index + 1) * batch_size]
+        }
+    )
+
+gparams = [T.grad(cost, param) for param in classifier.params]
+
+updates = [
+        (param, param - learning_rate * gparam)
+        for param, gparam in zip(classifier.params, gparams)
+    ]
+    
+train_model = theano.function(
+        inputs=[index],
+        outputs=cost,
+        updates=updates,
+        givens={
+            x: trainInput[index * batch_size: (index + 1) * batch_size],
+            y: trainOutput[index * batch_size: (index + 1) * batch_size]
+        }
+    )    
+#%% training the model
+    
+epoch = 0
+while (epoch < 10) :
+    epoch = epoch +1
+    for minibatch_index in range(n_train_batches):
+        minibatch_avg_cost = train_model(minibatch_index)
+        iter = (epoch - 1) * n_train_batches + minibatch_index
+        print(('   epoch %i, minibatch %i/%i.') % (epoch, minibatch_index +1, n_train_batches))
+        
+test_losses = [test_model(i) for i in range(n_test_batches)]
+test_score = np.mean(test_losses)
+
+
+
+
+
+
+
+
 
 #%% apply the convolutional layer
 import matplotlib.pyplot as plt
