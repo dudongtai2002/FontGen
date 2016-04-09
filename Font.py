@@ -55,7 +55,7 @@ class Font:
         for letter in training_letter:
             img = Image.new('L',(self.size,self.size),(1))
             draw = ImageDraw.Draw(img)
-            draw.text((0, 0),letter,(0,0,0),font=self.font)
+            draw.text((0, 0),letter,0,font=self.font)
             draw = ImageDraw.Draw(img)
             training[:,:,i] = np.array(img)
             i = i+1
@@ -63,7 +63,7 @@ class Font:
         for letter in testing_letter:
             img = Image.new('L',(self.size,self.size),(1))
             draw = ImageDraw.Draw(img)
-            draw.text((0, 0),letter,(0,0,0),font=self.font)
+            draw.text((0, 0),letter,0,font=self.font)
             draw = ImageDraw.Draw(img)
             testing[:,:,i] = np.array(img)
             i = i+1
