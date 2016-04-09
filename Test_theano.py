@@ -25,10 +25,17 @@ with np.load('train_data.npz') as data:
 
 trainInput = trainInput.transpose()
 trainOutput = trainOutput.transpose()
-testInput = testInput.transpose()
-testOutput = testOutput.transpose()    
-batch_size = 50
+trainOutput = trainOutput.flatten()
+trainInput = 1 - trainInput
+trainOutput = 1 - trainOutput
 
+testInput = testInput.transpose()
+testOutput = testOutput.transpose()   
+testOutput = testOutput.flatten() 
+testInput = 1 - testInput
+testOutput = 1 - testOutput
+batch_size = 1
+#%%
 
 def shared_dataset(data_x, data_y):
     """ Function that loads the dataset into shared variables
@@ -50,7 +57,7 @@ def shared_dataset(data_x, data_y):
     # lets us get around this issue
     return shared_x, T.cast(shared_y, 'int32')
 
-testInput, testOutput = shared_dataset(testInput, testOutput)
+#testInput, testOutput = shared_dataset(testInput, testOutput)
 trainInput, trainOutput = shared_dataset(trainInput, trainOutput)     
 #%% building neural networks
 
@@ -68,7 +75,7 @@ learning_rate = 0.15
 # allocate symbolic variables for the data
 index = T.lscalar()  # index to a [mini]batch
 x = T.matrix('x')
-y = T.lvector('y')
+y = T.ivector('y')
 
 print('...building the model')
 
@@ -81,7 +88,7 @@ layer0_input = x.reshape((batch_size, 1, basis_size, basis_size))
 layer0 = LeNetConvPoolLayer(
         rng,
         input=layer0_input,
-        image_shape=(batch_size, 1, basis_size, basis_size),
+        image_shape=(batch_size, 1, basis_size, basis_size),   # input image shape
         filter_shape=(nkerns[0], 1, 5, 5),
         poolsize=(2, 2)
     )
@@ -92,7 +99,7 @@ layer0 = LeNetConvPoolLayer(
 layer1 = LeNetConvPoolLayer(
         rng,
         input=layer0.output,
-        image_shape=(batch_size, nkerns[0], 12, 12),
+        image_shape=(batch_size, nkerns[0], 23, 23),
         filter_shape=(nkerns[1], nkerns[0], 4, 4),
         poolsize=(2, 2)
     )
@@ -103,7 +110,7 @@ layer2_input = layer1.output.flatten(2)
 layer2 = HiddenLayer(
         rng,
         input=layer2_input,
-        n_in=nkerns[1] * 4 * 4,
+        n_in=nkerns[1] * 10 * 10,
         n_out=basis_size * basis_size,
         activation=T.nnet.sigmoid
     )
@@ -118,23 +125,56 @@ updates = [
         for param_i, grad_i in zip(params, grads)
     ]
     
+#
+#test_model = theano.function(
+#        inputs = [index],
+#        outputs = cost,
+#        givens={
+#            x: testInput[index * batch_size: (index + 1) * batch_size],
+#            y: testOutput[index * batch_size: (index + 1) * batch_size]
+#        }
+#    )
+    
 train_model = theano.function(
         inputs = [index],
         outputs = cost,
         updates=updates,
         givens={
             x: trainInput[index * batch_size: (index + 1) * batch_size],
-            y: trainOutput[index * batch_size: (index + 1) * batch_size]
+            y: trainOutput[index * batch_size * basis_size * basis_size: (index + 1) * batch_size * basis_size * basis_size]
         }
     )    
 
-test_model = theano.function(
-        inputs = [index],
-        outputs = cost,
-        givens={
-            x: testInput[index * batch_size: (index + 1) * batch_size],
-            y: testOutput[index * batch_size: (index + 1) * batch_size]
-        }
-    )
-#%%    
+#%% training the model
+    
+n_train_batches = 1
+n_epochs = 1
+epoch = 0
 
+while (epoch < n_epochs):
+    epoch = epoch + 1
+    for minibatch_index in range(4,5):
+        minibatch_avg_cost = train_model(minibatch_index)
+        iter = (epoch - 1) * n_train_batches + minibatch_index
+        print(('   epoch %i, minibatch %i/%i.') % (epoch, minibatch_index +1, n_train_batches))
+        
+#test_losses = [test_model(i) for i in range(n_test_batches)]
+#test_score = np.mean(test_losses)
+
+#%% predict
+
+predict_model = theano.function(
+        inputs = [x],
+        outputs = layer2.output
+    )
+
+predicted_values = predict_model(testInput[2:3])
+
+
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+output_img = predicted_values
+output_img = output_img.reshape(50,50)
+output_img = np.asarray(output_img, dtype = 'float64') /256
+
+plt.imshow(output_img)
