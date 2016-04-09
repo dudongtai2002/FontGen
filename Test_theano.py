@@ -10,6 +10,8 @@ Created on Thu Apr  7 15:54:40 2016
 from Font import *
 from utility import *
 import numpy as np
+import theano
+from theano import tensor as T
 
 with np.load('train_data.npz') as data:
     trainInput = data['trainInput']
@@ -26,6 +28,30 @@ trainOutput = trainOutput.transpose()
 testInput = testInput.transpose()
 testOutput = testOutput.transpose()    
 batch_size = 50
+
+
+def shared_dataset(data_x, data_y):
+    """ Function that loads the dataset into shared variables
+
+    The reason we store our dataset in shared variables is to allow
+    Theano to copy it into the GPU memory (when code is run on GPU).
+    Since copying data into the GPU is slow, copying a minibatch everytime
+    is needed (the default behaviour if the data is not in a shared
+    variable) would lead to a large decrease in performance.
+    """
+    shared_x = theano.shared(np.asarray(data_x, dtype=theano.config.floatX))
+    shared_y = theano.shared(np.asarray(data_y, dtype=theano.config.floatX))
+    # When storing data on the GPU it has to be stored as floats
+    # therefore we will store the labels as ``floatX`` as well
+    # (``shared_y`` does exactly that). But during our computations
+    # we need them as ints (we use labels as index, and if they are
+    # floats it doesn't make sense) therefore instead of returning
+    # ``shared_y`` we will have to cast it to int. This little hack
+    # lets us get around this issue
+    return shared_x, T.cast(shared_y, 'int32')
+
+testInput, testOutput = shared_dataset(testInput, testOutput)
+trainInput, trainOutput = shared_dataset(trainInput, trainOutput)     
 #%% building neural networks
 
 from NeuralNets import *
@@ -39,9 +65,10 @@ nkerns = [5, 8]
 learning_rate = 0.15
 
 
-
+# allocate symbolic variables for the data
+index = T.lscalar()  # index to a [mini]batch
 x = T.matrix('x')
-y = T.matrix('y')
+y = T.lvector('y')
 
 print('...building the model')
 
@@ -92,8 +119,8 @@ updates = [
     ]
     
 train_model = theano.function(
-        [index],
-        cost,
+        inputs = [index],
+        outputs = cost,
         updates=updates,
         givens={
             x: trainInput[index * batch_size: (index + 1) * batch_size],
@@ -102,8 +129,8 @@ train_model = theano.function(
     )    
 
 test_model = theano.function(
-        [index],
-        cost,
+        inputs = [index],
+        outputs = cost,
         givens={
             x: testInput[index * batch_size: (index + 1) * batch_size],
             y: testOutput[index * batch_size: (index + 1) * batch_size]
