@@ -74,28 +74,18 @@ def shared_dataset(data_x, data_y):
 
 #testInput, testOutput = shared_dataset(testInput, testOutput)
 trainInput, trainOutput = shared_dataset(trainInput, trainOutput)  
-#%%
-from Font import *
-from utility import *
-import numpy as np
-
-with np.load('train_data.npz') as data:
-    trainInput = data['trainInput']
-    trainOutput = data['trainOutput']
-    testInput = data['testInput']
-    testOutput = data['testOutput']
-    basis_size = int(data['basis_size'])
-    testing_size = int(data['testing_size'])
-    training_size = int(data['training_size'])
 
    
 #%% building neural networks
 
 
 
-rng = np.random.RandomState(1234)
-nkerns = [5, 8]
-learning_rate = 0.15
+rng1 = np.random.RandomState(1234)
+rng2 = np.random.RandomState(2345)
+rng3 = np.random.RandomState(1567)
+rng4 = np.random.RandomState(1124)
+nkerns = [20, 30]
+learning_rate = 0.2
 
 
 # allocate symbolic variables for the data
@@ -112,7 +102,7 @@ layer0_input = x.reshape((batch_size, 1, basis_size, basis_size))
 # after filtering, image size reduced to (50 - 5 + 1) = 46
 # after max pooling, image size reduced to 46 / 2 = 23
 layer0 = LeNetConvPoolLayer(
-        rng,
+        rng1,
         input=layer0_input,
         image_shape=(batch_size, 1, basis_size, basis_size),   # input image shape
         filter_shape=(nkerns[0], 1, 5, 5),
@@ -123,7 +113,7 @@ layer0 = LeNetConvPoolLayer(
 # after filtering, image size (23 - 4 + 1) = 20
 # after max pooling, image size reduced to 20 / 2 = 10    
 layer1 = LeNetConvPoolLayer(
-        rng,
+        rng2,
         input=layer0.output,
         image_shape=(batch_size, nkerns[0], 23, 23),
         filter_shape=(nkerns[1], nkerns[0], 4, 4),
@@ -134,16 +124,23 @@ layer2_input = layer1.output.flatten(2)
 
 # construct a fully-connected sigmoidal layer
 layer2 = HiddenLayer(
-        rng,
+        rng3,
         input=layer2_input,
         n_in=nkerns[1] * 10 * 10,
-        n_out=basis_size * basis_size,
+        n_out=400,
         activation=T.nnet.sigmoid
     )
     
-cost = ((layer2.output - y) ** 2).sum()
+layer3 = HiddenLayer(
+        rng4,
+        input=layer2.output,
+        n_in=400,
+        n_out=basis_size * basis_size,
+        activation=T.nnet.sigmoid
+    )    
+cost = ((layer3.output - y) ** 2).sum()
 
-params = layer2.params + layer1.params + layer0.params
+params = layer3.params + layer2.params + layer1.params + layer0.params
 grads = T.grad(cost, params)
 
 updates = [
@@ -166,15 +163,15 @@ train_model = theano.function(
         outputs = cost,
         updates=updates,
         givens={
-            x: trainInput[index * batch_size: (index + 1) * batch_size],
-            y: trainOutput[index * batch_size * basis_size * basis_size: (index + 1) * batch_size * basis_size * basis_size]
+            x: trainInput[index : (index + 1) ],
+            y: trainOutput[index * basis_size * basis_size: (index + 1) * basis_size * basis_size]
         }
     )    
 
 #%% training the model
     
-n_train_batches = 500
-n_epochs = 100
+n_train_batches = 50
+n_epochs = 10
 epoch = 0
 
 while (epoch < n_epochs):
@@ -187,14 +184,13 @@ while (epoch < n_epochs):
 #test_losses = [test_model(i) for i in range(n_test_batches)]
 #test_score = np.mean(test_losses)
 
-#%% predict
-
+#%%
 predict_model = theano.function(
         inputs = [x],
-        outputs = layer2.output
+        outputs = layer3.output
     )
 
-predicted_values = predict_model(testInput[3:4])
+predicted_values = predict_model(testInput[22:23])
 
 
 import matplotlib.pyplot as plt
