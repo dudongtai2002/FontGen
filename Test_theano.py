@@ -7,11 +7,14 @@ Created on Thu Apr  7 15:54:40 2016
 
 #%% Load Data
 
-from Font import *
-from utility import *
 import numpy as np
 import theano
 from theano import tensor as T
+
+
+from Font import *
+from utility import *
+from NeuralNets import *
 
 with np.load('train_data.npz') as data:
     trainInput = data['trainInput']
@@ -25,57 +28,34 @@ with np.load('train_data.npz') as data:
 
 trainInput = trainInput.transpose()
 trainOutput = trainOutput.transpose()
-trainOutput = trainOutput.flatten()
+#trainOutput = trainOutput.flatten()
 trainInput = 1 - trainInput
 trainOutput = 1 - trainOutput
 
 testInput = testInput.transpose()
 testOutput = testOutput.transpose()   
-testOutput = testOutput.flatten() 
+#testOutput = testOutput.flatten() 
 testInput = 1 - testInput
 testOutput = 1 - testOutput
 batch_size = 1
-#%%
 
-def shared_dataset(data_x, data_y):
-    """ Function that loads the dataset into shared variables
-
-    The reason we store our dataset in shared variables is to allow
-    Theano to copy it into the GPU memory (when code is run on GPU).
-    Since copying data into the GPU is slow, copying a minibatch everytime
-    is needed (the default behaviour if the data is not in a shared
-    variable) would lead to a large decrease in performance.
-    """
-    shared_x = theano.shared(np.asarray(data_x, dtype=theano.config.floatX))
-    shared_y = theano.shared(np.asarray(data_y, dtype=theano.config.floatX))
-    # When storing data on the GPU it has to be stored as floats
-    # therefore we will store the labels as ``floatX`` as well
-    # (``shared_y`` does exactly that). But during our computations
-    # we need them as ints (we use labels as index, and if they are
-    # floats it doesn't make sense) therefore instead of returning
-    # ``shared_y`` we will have to cast it to int. This little hack
-    # lets us get around this issue
-    return shared_x, T.cast(shared_y, 'int32')
-
-#testInput, testOutput = shared_dataset(testInput, testOutput)
 trainInput, trainOutput = shared_dataset(trainInput, trainOutput)     
 #%% building neural networks
 
-from NeuralNets import *
 
-import numpy as np
-import theano
-from theano import tensor as T
 
-rng = np.random.RandomState(1234)
-nkerns = [5, 8]
-learning_rate = 0.15
+rng1 = np.random.RandomState(1234)
+rng2 = np.random.RandomState(2345)
+rng3 = np.random.RandomState(1567)
+rng4 = np.random.RandomState(1124)
+nkerns = [8, 10]
+learning_rate = 1
 
 
 # allocate symbolic variables for the data
 index = T.lscalar()  # index to a [mini]batch
 x = T.matrix('x')
-y = T.ivector('y')
+y = T.imatrix('y')
 
 print('...building the model')
 
@@ -86,7 +66,7 @@ layer0_input = x.reshape((batch_size, 1, basis_size, basis_size))
 # after filtering, image size reduced to (50 - 5 + 1) = 46
 # after max pooling, image size reduced to 46 / 2 = 23
 layer0 = LeNetConvPoolLayer(
-        rng,
+        rng1,
         input=layer0_input,
         image_shape=(batch_size, 1, basis_size, basis_size),   # input image shape
         filter_shape=(nkerns[0], 1, 5, 5),
@@ -97,7 +77,7 @@ layer0 = LeNetConvPoolLayer(
 # after filtering, image size (23 - 4 + 1) = 20
 # after max pooling, image size reduced to 20 / 2 = 10    
 layer1 = LeNetConvPoolLayer(
-        rng,
+        rng2,
         input=layer0.output,
         image_shape=(batch_size, nkerns[0], 23, 23),
         filter_shape=(nkerns[1], nkerns[0], 4, 4),
@@ -108,16 +88,23 @@ layer2_input = layer1.output.flatten(2)
 
 # construct a fully-connected sigmoidal layer
 layer2 = HiddenLayer(
-        rng,
+        rng3,
         input=layer2_input,
         n_in=nkerns[1] * 10 * 10,
-        n_out=basis_size * basis_size,
+        n_out=400,
         activation=T.nnet.sigmoid
     )
     
-cost = ((layer2.output - y) ** 2).sum()
+layer3 = BinaryLogisticRegression(
+        rng4,
+        input=layer2.output,
+        n_in=400,
+        n_out=basis_size * basis_size,
+    )    
+cost = layer3.negative_log_likelihood(y)
+error = ((y - layer3.y_pred)**2).sum()
 
-params = layer2.params + layer1.params + layer0.params
+params = layer3.params + layer2.params + layer1.params + layer0.params
 grads = T.grad(cost, params)
 
 updates = [
@@ -140,20 +127,20 @@ train_model = theano.function(
         outputs = cost,
         updates=updates,
         givens={
-            x: trainInput[index * batch_size: (index + 1) * batch_size],
-            y: trainOutput[index * batch_size * basis_size * basis_size: (index + 1) * batch_size * basis_size * basis_size]
+            x: trainInput[index : (index + 1) ],
+            y: trainOutput[index : (index + 1) ]
         }
     )    
 
 #%% training the model
     
-n_train_batches = 1
-n_epochs = 1
+n_train_batches = 50
+n_epochs = 100
 epoch = 0
 
 while (epoch < n_epochs):
     epoch = epoch + 1
-    for minibatch_index in range(4,5):
+    for minibatch_index in range(n_train_batches):
         minibatch_avg_cost = train_model(minibatch_index)
         iter = (epoch - 1) * n_train_batches + minibatch_index
         print(('   epoch %i, minibatch %i/%i.') % (epoch, minibatch_index +1, n_train_batches))
@@ -161,14 +148,16 @@ while (epoch < n_epochs):
 #test_losses = [test_model(i) for i in range(n_test_batches)]
 #test_score = np.mean(test_losses)
 
-#%% predict
 
+
+#%%
 predict_model = theano.function(
         inputs = [x],
-        outputs = layer2.output
+        outputs = layer3.p_y_given_x,
+        on_unused_input='ignore'
     )
 
-predicted_values = predict_model(testInput[2:3])
+predicted_values = predict_model(testInput[5:6])
 
 
 import matplotlib.pyplot as plt
