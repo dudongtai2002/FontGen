@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7995a54d-338a-4973-9331-2b813632af49" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Font.py" afterPath="$PROJECT_DIR$/Font.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data.json" afterPath="$PROJECT_DIR$/data.json" />
-    </list>
+    <list default="true" id="7995a54d-338a-4973-9331-2b813632af49" name="Default" comment="" />
     <ignored path="FontGen.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -49,10 +46,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main_tensorflow.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main_tensorflow.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main_tensorflow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.5479115" vertical-offset="538" max-vertical-offset="1770">
+            <state vertical-scroll-proportion="0.0" vertical-offset="538" max-vertical-offset="1770">
               <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
               <folding>
                 <element signature="e#106#124#0" expanded="true" />
@@ -71,10 +68,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main_theano.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main_theano.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Main_theano.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="328" max-vertical-offset="780">
+            <state vertical-scroll-proportion="0.6768559" vertical-offset="0" max-vertical-offset="780">
               <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
               <folding>
                 <element signature="e#106#124#0" expanded="true" />
@@ -86,7 +83,7 @@
       <file leaf-file-name="utility.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utility.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="420">
+            <state vertical-scroll-proportion="0.0" vertical-offset="330" max-vertical-offset="420">
               <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
               <folding />
             </state>
@@ -96,7 +93,7 @@
       <file leaf-file-name="data.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="90">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
               <caret line="0" column="10527" selection-start-line="0" selection-start-column="10527" selection-end-line="0" selection-end-column="10527" />
               <folding />
             </state>
@@ -451,7 +448,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="17" y="48" width="1400" height="784" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -460,18 +457,18 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27549824" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3916084" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3916084" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -504,6 +501,84 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Font.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="808" max-vertical-offset="1215">
+          <caret line="65" column="37" selection-start-line="65" selection-start-column="37" selection-end-line="65" selection-end-column="37" />
+          <folding>
+            <element signature="e#86#111#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages/PIL/ImageDraw.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1605" max-vertical-offset="6135">
+          <caret line="124" column="44" selection-start-line="124" selection-start-column="41" selection-end-line="124" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main_tensorflow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1770">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#106#124#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="120">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main_theano.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="328" max-vertical-offset="780">
+          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
+          <folding>
+            <element signature="e#106#124#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utility.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="330" max-vertical-offset="420">
+          <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
+          <caret line="0" column="10527" selection-start-line="0" selection-start-column="10527" selection-end-line="0" selection-end-column="10527" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Character/现代汉语常用字表.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2775">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Character/ChineseCharacter.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
+          <caret line="0" column="3500" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="3500" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Font.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1215">
@@ -688,7 +763,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="111.63717" vertical-offset="0" max-vertical-offset="74130">
           <caret line="3364" column="16" selection-start-line="3364" selection-start-column="16" selection-end-line="3364" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -716,21 +790,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Main_theano.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="780">
-          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-          <folding>
-            <element signature="e#106#124#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="14.369469" vertical-offset="0" max-vertical-offset="6810">
           <caret line="433" column="0" selection-start-line="433" selection-start-column="0" selection-end-line="433" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -738,7 +801,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.6855037" vertical-offset="1500" max-vertical-offset="2655">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -746,7 +808,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.120393" vertical-offset="3505" max-vertical-offset="8505">
           <caret line="149" column="8" selection-start-line="149" selection-start-column="8" selection-end-line="149" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -778,8 +839,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Main_tensorflow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.5479115" vertical-offset="538" max-vertical-offset="1770">
+        <state vertical-scroll-proportion="0.0" vertical-offset="538" max-vertical-offset="1770">
           <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding>
+            <element signature="e#106#124#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Main_theano.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6768559" vertical-offset="0" max-vertical-offset="780">
+          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
           <folding>
             <element signature="e#106#124#0" expanded="true" />
           </folding>

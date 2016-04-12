@@ -7,6 +7,9 @@ Created on Mon Mar 28 16:20:00 2016
 #%%
 import json
 import random
+import numpy as np
+import theano
+from theano import tensor as T
 
 def generateLetterSets(trainNum, testNum):
     # generate a json files that have both training and testing characters
@@ -22,3 +25,6 @@ def generateLetterSets(trainNum, testNum):
     with open('data.json', 'w') as outfile:
         json.dump(data, outfile)
         
+        
+def pp():
+    print('444ss')
