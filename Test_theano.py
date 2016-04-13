@@ -21,7 +21,8 @@ input_letter = ['B','A','S','Q']
 output_letter = ['R']
 
 Fonts = Font(basis_size, font_dir, input_letter, output_letter )
-trainInput, trainOutput, testInput, testOutput = Fonts.getLetterSets(10000,100)
+#%%
+trainInput, trainOutput, testInput, testOutput = Fonts.getLetterSets(10510,51)
 trainInput = 1 - trainInput
 trainOutput = 1 - trainOutput
 testInput = 1 - testInput
@@ -194,8 +195,8 @@ train_model = theano.function(
 
 #%% training the model
     
-n_train_batches = 199
-n_epochs = 500
+n_train_batches = 210
+n_epochs = 1000
 epoch = 0
 
 while (epoch < n_epochs):
@@ -210,20 +211,27 @@ while (epoch < n_epochs):
 
 
 
-#%%
+#%% predict output
+
+
 predict_model = theano.function(
         inputs = [x],
         outputs = layer4.p_y_given_x,
         on_unused_input='ignore'
     )
 
-predicted_values = predict_model(testInput[50:100])
+predicted_values = predict_model(testInput[0:50])
 
+#%% compare output
+n = 3
 
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 output_img = predicted_values
 output_img = output_img.reshape(50,36,36)
 output_img = np.asarray(output_img, dtype = 'float64') /256
-
-plt.imshow(output_img[25,:,:])
+plt.figure(1)
+plt.subplot(121)
+plt.imshow(output_img[n,:,:],interpolation="nearest",cmap='Greys')
+plt.subplot(122)
+plt.imshow(testOutput[n,:].reshape((basis_size,basis_size)),interpolation="nearest",cmap='Greys')
