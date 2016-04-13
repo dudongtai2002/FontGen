@@ -196,7 +196,7 @@ train_model = theano.function(
 #%% training the model
     
 n_train_batches = 210
-n_epochs = 1000
+n_epochs = 1500
 epoch = 0
 
 while (epoch < n_epochs):
