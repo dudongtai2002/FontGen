@@ -7,39 +7,31 @@ Created on Thu Apr  7 15:54:40 2016
 
 #%% Load Data
 
-import numpy as np
+import numpy as npFont
 import theano
 from theano import tensor as T
 
 
-from Font import *
+from Fontv2 import *
 from utility import *
 from NeuralNets import *
+basis_size = 36
+font_dir = '/home/shengx/Documents/Font'
+input_letter = ['B','A','S','Q']
+output_letter = ['R']
 
-with np.load('train_data.npz') as data:
-    trainInput = data['trainInput']
-    trainOutput = data['trainOutput']
-    testInput = data['testInput']
-    testOutput = data['testOutput']
-    basis_size = int(data['basis_size'])
-    testing_size = int(data['testing_size'])
-    training_size = int(data['training_size'])
-
-
-trainInput = trainInput.transpose()
-trainOutput = trainOutput.transpose()
-#trainOutput = trainOutput.flatten()
+Fonts = Font(basis_size, font_dir, input_letter, output_letter )
+trainInput, trainOutput, testInput, testOutput = Fonts.getLetterSets(1000,200)
 trainInput = 1 - trainInput
 trainOutput = 1 - trainOutput
-
-testInput = testInput.transpose()
-testOutput = testOutput.transpose()   
-#testOutput = testOutput.flatten() 
 testInput = 1 - testInput
 testOutput = 1 - testOutput
+
+trainInput, trainOutput = shared_dataset(trainInput, trainOutput) 
+
+
 batch_size = 1
 
-trainInput, trainOutput = shared_dataset(trainInput, trainOutput)     
 #%% building neural networks
 
 
