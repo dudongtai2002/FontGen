@@ -7,7 +7,7 @@ Created on Thu Apr  7 15:54:40 2016
 
 #%% Load Data
 
-import numpy as npFont
+import numpy as np
 import theano
 from theano import tensor as T
 

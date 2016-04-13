@@ -16,12 +16,12 @@ Created on Thu Apr  7 15:54:40 2016
 
 #%% Load Data
 
-import numpy as npFont
+import numpy as np
 import theano
 from theano import tensor as T
 
 
-from Fontv2 import *
+from Font import *
 from utility import *
 from NeuralNets import *
 basis_size = 36
