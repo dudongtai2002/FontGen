@@ -1,76 +1,102 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Mar 28 14:43:57 2016
+Spyder Editor
 
-@author: shengx
+This is a temporary script file.
 """
 
+#%%
 from PIL import ImageFont
 from PIL import Image
 from PIL import ImageDraw
+import os
+import os.path
+import random
 import numpy as np
-import json
 
 
 class Font:
     
-    def __init__(self, size, fontFile):
+    def __init__(self, size, root_dir, input_letter, output_letter):
         self.size = size
-        filename = './Fonts/'+fontFile
-        self.font = ImageFont.truetype(filename, size)
+        self.input_letter = input_letter
+        self.output_letter = output_letter
+        
+        font_files = []
+        for parent,dirnames,filenames in os.walk(root_dir):  
+            for filename in filenames:
+                font_files.append(os.path.join(parent,filename))
+        print(('Fond %i font files') % (len(font_files)))
+        random.shuffle(font_files)
+        self.font_files = font_files
+
 
     def getSize(self):
         return(self.size)
-
-    def getSingleLetter(self,letter):
-        # returning a 2D numpy array of the specified letter-font image
-        img = Image.new('L',(self.size,self.size),(1))
-        draw = ImageDraw.Draw(img)
-        draw.text((0, 0),letter,(0,0,0),font=self.font)
-        draw = ImageDraw.Draw(img)
-        arr = np.array(img)
-        return(arr)
-        
-    def showSingleLetter(self,letter):
-        img = Image.new('L',(self.size,self.size),(1))
-        draw = ImageDraw.Draw(img)
-        draw.text((0, 0),letter,(0,0,0),font=self.font)
-        draw = ImageDraw.Draw(img)
-        arr = np.array(img)
-        plt.imshow(arr)
-        plt.show()
-        
-    def getLetterSets(self):
-        # return a 3D numpy array that contains images of multiple letters
-        with open('data.json') as json_data:
-            data = json.load(json_data)    
-            
-        training_letter = data['training']
-        testing_letter = data['testing']
-        
-        training = np.zeros((self.size,self.size,len(training_letter)))
-        testing = np.zeros((self.size,self.size,len(testing_letter)))
-        
-        i = 0
-        for letter in training_letter:
-            img = Image.new('L',(self.size,self.size),(1))
-            draw = ImageDraw.Draw(img)
-            draw.text((0, 0),letter,(0,0,0),font=self.font)
-            draw = ImageDraw.Draw(img)
-            training[:,:,i] = np.array(img)
-            i = i+1
-        i = 0    
-        for letter in testing_letter:
-            img = Image.new('L',(self.size,self.size),(1))
-            draw = ImageDraw.Draw(img)
-            draw.text((0, 0),letter,(0,0,0),font=self.font)
-            draw = ImageDraw.Draw(img)
-            testing[:,:,i] = np.array(img)
-            i = i+1
-                        
-        return (training, testing)
         
         
-
-    
-    
+    def getLetterSets(self, n_train_examples, n_test_examples):
+        # return a 4D numpy array that contains images of multiple letters
+        
+        train_input = np.zeros((n_train_examples, len(self.input_letter),self.size,self.size))
+        train_output = np.zeros((n_train_examples, len(self.output_letter),self.size,self.size))
+        test_input = np.zeros((n_test_examples, len(self.input_letter),self.size,self.size))
+        test_output = np.zeros((n_test_examples, len(self.output_letter),self.size,self.size))
+        
+        m = 0
+        for font_file in self.font_files[0:n_train_examples]:
+            try:
+                n = 0
+                for letter in self.input_letter:
+                    font = ImageFont.truetype(font_file, self.size)
+                    img = Image.new('L',(self.size,self.size),(1))
+                    draw = ImageDraw.Draw(img)
+                    draw.text((10, -5),letter,(0),font = font)
+                    draw = ImageDraw.Draw(img)
+                    train_input[m, n, :, :] = np.array(img)
+                    n = n + 1
+                    
+                n = 0
+                for letter in self.output_letter:
+                    font = ImageFont.truetype(font_file, self.size)
+                    img = Image.new('L',(self.size,self.size),(1))
+                    draw = ImageDraw.Draw(img)
+                    draw.text((10, -5),letter,(0),font = font)
+                    draw = ImageDraw.Draw(img)
+                    train_output[m, n, :, :] = np.array(img)
+                    n = n + 1                                        
+            except:
+                continue
+            m = m + 1  
+        train_input = train_input[0:m,:,:,:]    
+        train_output = train_output[0:m,:,:,:]   
+        
+        m = 0
+        for font_file in self.font_files[n_train_examples:n_train_examples + n_test_examples]:
+            try:
+                n = 0
+                for letter in self.input_letter:
+                    font = ImageFont.truetype(font_file, self.size)
+                    img = Image.new('L',(self.size,self.size),(1))
+                    draw = ImageDraw.Draw(img)
+                    draw.text((10, -5),letter,(0),font = font)
+                    draw = ImageDraw.Draw(img)
+                    test_input[m, n, :, :] = np.array(img)
+                    n = n + 1
+                n = 0
+                for letter in self.output_letter:
+                    font = ImageFont.truetype(font_file, self.size)
+                    img = Image.new('L',(self.size,self.size),(1))
+                    draw = ImageDraw.Draw(img)
+                    draw.text((10, -5),letter,(0),font = font)
+                    draw = ImageDraw.Draw(img)
+                    test_output[m, n, :, :] = np.array(img)
+                    n = n + 1                    
+            except:
+                continue
+            m = m + 1
+        i = 0  
+        test_input = test_input[0:m,:,:,:]
+        test_output = test_output[0:m,:,:,:]
+        
+        return (train_input, train_output, test_input, test_output)
