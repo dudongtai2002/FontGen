@@ -36,14 +36,14 @@ trainOutput, testOutput = outputFont.getLetterSets()
 
 trainInput = np.reshape(trainInput, (basis_size**2 , training_size))
 testInput = np.reshape(testInput, (basis_size**2, testing_size))
-trainOutput = np.reshape(trainOutput, (basis_size**2, training_size))
+trainOutput = np.reshape(trainOutput, (basis_size**2, training_size))     #2500*1000
 testOutput = np.reshape(testOutput, (basis_size**2, testing_size))
 
 trainInput = trainInput.transpose()
 trainOutput = trainOutput.transpose()
-trainOutput = trainOutput.flatten()
-trainInput = 1 - trainInput
-trainOutput = 1 - trainOutput
+trainOutput = trainOutput.flatten()  #1000*2500
+trainInput = 1 - trainInput    #?
+trainOutput = 1 - trainOutput   #?
 
 testInput = testInput.transpose()
 testOutput = testOutput.transpose()   
@@ -200,3 +200,4 @@ output_img = output_img.reshape(50,50)
 output_img = np.asarray(output_img, dtype = 'float64') /256
 
 plt.imshow(output_img)
+plt.show()

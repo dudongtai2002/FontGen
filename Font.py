@@ -48,15 +48,17 @@ class Font:
         training_letter = data['training']
         testing_letter = data['testing']
         
-        training = np.zeros((self.size,self.size,len(training_letter)))
+        training = np.zeros((self.size,self.size,len(training_letter)))  #return a new array of given shape and type
         testing = np.zeros((self.size,self.size,len(testing_letter)))
         
         i = 0
         for letter in training_letter:
-            img = Image.new('L',(self.size,self.size),(1))
+            img = Image.new('L',(self.size,self.size),(1))  #why(1)? 结果是全黑的
             draw = ImageDraw.Draw(img)
-            draw.text((0, 0),letter,0,font=self.font)
+            draw.text((0, 0),letter,0,font=self.font)   #(0)?
             draw = ImageDraw.Draw(img)
+            if(i==101):
+                img.save("trytest.png")
             training[:,:,i] = np.array(img)
             i = i+1
         i = 0    
