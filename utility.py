@@ -14,7 +14,7 @@ from theano import tensor as T
 def generateLetterSets(trainNum, testNum):
     # generate a json files that have both training and testing characters
     f1 = open('./Character/ChineseCharacter.txt','r')
-    letters = f1.readline()
+    letters = f1.readline()   #is this only read one line or the whole file?
     letters = list(letters)
     random.shuffle(letters)
     
